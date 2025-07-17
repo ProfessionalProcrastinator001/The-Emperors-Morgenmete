@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Emperor's Morgenmete 🍳</title>
+  <style>
+    body { font-family: sans-serif; margin: 30px; }
+    label, select, input { display: block; margin: 10px 0; }
+    button { padding: 10px 20px; margin: 10px 5px; }
+    pre { background: #f0f0f0; padding: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>The Emperor's Morgenmete 🐧</h1>
+
+  <form id="order-form">
+    <label for="item-type">Select Item:</label>
+    <select id="item-type" name="item_type" required>
+      <option value="egg">Egg 🍳</option>
+      <option value="paratha">Paratha 🥘</option>
+      <option value="tea">Tea ☕</option>
+    </select>
+
+    <label for="additives">Additives (JSON per line):</label>
+    <textarea id="additives" rows="4" cols="50" placeholder='e.g. {"name": "Sugar", "price": 10}'></textarea>
+
+    <button type="submit">Add Order</button>
+  </form>
+
+  <button onclick="viewOrder()">View Order</button>
+  <button onclick="checkout()">Checkout</button>
+
+  <h3>Response:</h3>
+  <pre id="response-box">No response yet.</pre>
+
+  <script>
+    const responseBox = document.getElementById("response-box");
+
+    document.getElementById("order-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const itemType = document.getElementById("item-type").value;
+      const additivesText = document.getElementById("additives").value.trim();
+
+      // Parse each line into JSON
+      const additiveLines = additivesText ? additivesText.split("\n") : [];
+      const additives = additiveLines.map(line => JSON.stringify(JSON.parse(line))); // validate JSON
+
+      const formData = new FormData();
+      formData.append("item_type", itemType);
+      for (const add of additives) {
+        formData.append("additives", add);
+      }
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/add-item", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        responseBox.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        responseBox.textContent = "Error: " + err;
+      }
+    });
+
+    async function viewOrder() {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/view-order");
+        const data = await res.json();
+        responseBox.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        responseBox.textContent = "Error: " + err;
+      }
+    }
+
+    async function checkout() {
+      const method = prompt("Enter payment method (Cash/Card/Easypaisa):", "Cash");
+      if (!method) return;
+
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/checkout?payment_method=${method}`, {
+          method: "POST",
+        });
+        const data = await res.json();
+        responseBox.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        responseBox.textContent = "Error: " + err;
+      }
+    }
+  </script>
+</body>
+</html>
