@@ -1,5 +1,5 @@
 import unittest
-from the_emperors_morgenmete import Egg, Paratha, Tea, MenuItem, Order  # assuming your main file is named main.py
+from the_emperors_morgenmete import Egg, Paratha, Tea, MenuItem, Order
 
 class TestMenuItem(unittest.TestCase):
 
