@@ -114,6 +114,13 @@ Tests include:
 
 ---
 
+## 🎥 Tutorial
+
+Want to see it in action? Check out the video walkthroughs in the repo :
+
+- [▶️ Tutorial Part 1]
+- [▶️ Tutorial Part 2]
+
 ## 📌 Roadmap / Future Possible Improvements :
 
 * [ ] Add order history / multi-session support
