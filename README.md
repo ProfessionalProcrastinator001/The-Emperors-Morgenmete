@@ -161,5 +161,5 @@ Feel free to use, modify, and share the project with attribution.
 Made by **Abdullah Adil** 🐧
 
 If you liked it, give it a ⭐ 
-If you didnt, give it a ⭐ (twice 🙂)
+If you didnt, give it 2 ⭐ ( 🙂)
 
